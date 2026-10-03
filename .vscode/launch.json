@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": "allo cacou"
+            "args": "C:\\Users\\sigaaya\\repos\\NAND403_A26_Ateliers\\atelier_2\\drinks.json"
         }
     ]
 }
