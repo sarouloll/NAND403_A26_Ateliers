@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QMessageBox
+from PySide6 import QtWidgets
 
 # # snake case
 # this_is_a_snake_case_syntax
@@ -20,16 +21,22 @@ class MessageBoard(QWidget):
         layout = QVBoxLayout(self)
         label = QLabel("Message board")
         layout.addWidget(label)
+        
+        self.message = QtWidgets.QTextEdit()
+        layout.addWidget(self.message)
 
-        #QTextEdit
+        button = QtWidgets.QPushButton()
+        layout.addWidget(button)
+        button.setText("OK")
 
-        #QPushButton
-
+        button.clicked.connect(self.on_click)
 
 
     def on_click(self):
         print("on click called")
-        # QMessageBox
+        message = self.message.toPlainText()
+        QMessageBox.information (self, "message", message)
+        
  
 def main():
     global widget
