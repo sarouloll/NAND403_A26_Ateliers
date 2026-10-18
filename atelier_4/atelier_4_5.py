@@ -21,11 +21,8 @@ class RandomGenerator(QWidget):
     
     def build_ui(self):
         layout = QGridLayout(self)
-
         self.create_button = QPushButton("Create")
         self.create_button.clicked.connect(self.create_object)
-
-        # Nom et configuration des zones de textes
         
         self.obj = QtWidgets.QLineEdit("")
         self.posX = QtWidgets.QLineEdit("")
@@ -71,9 +68,9 @@ class RandomGenerator(QWidget):
 
         layout.addWidget(self.create_button)
 
+
     def get_values(self):
 
-        
         self.posX = float(self.posX.text())
         self.posY = float(self.posY.text())
         self.posZ = float(self.posZ.text())
@@ -85,11 +82,11 @@ class RandomGenerator(QWidget):
         self.scale_max = float(self.scale.text())
     
     def create_object(self):
-        forme = random.choice(["cube", "cylindre", "sphere"])
-        self.obj = int(self.obj.text())
+        obj_value = int(self.obj.text())
         
-        for i in range(self.obj):
-            
+        for i in range(obj_value):
+            forme = random.choice(["cube", "cylindre", "sphere"]) 
+
             if forme == "cube":
                 objet = cmds.polyCube()[0]
                 
@@ -98,15 +95,14 @@ class RandomGenerator(QWidget):
 
             else:
                 objet = cmds.polySphere()[0]
-
-         
-            random_value_X = random.uniform(float(self.posX())), (float(self.posX_max()))
-            random_value_Y = random.uniform(float(self.posY())), (float(self.posY_max()))
-            random_value_Z = random.uniform(float(self.posZ())), (float(self.posZ_max()))
-            random_value_s = random.uniform(float(self.scale())), (float(self.scale_max()))
+   
+            random_value_X = random.uniform(float(self.posX.text()), float(self.posX_max.text()))
+            random_value_Y = random.uniform(float(self.posY.text()), float(self.posY_max.text()))
+            random_value_Z = random.uniform(float(self.posZ.text()), float(self.posZ_max.text()))
+            random_value_s = random.uniform(float(self.scale.text()), float(self.scale_max.text()))
 
             cmds.move(random_value_X, random_value_Y, random_value_Z, objet)
-            cmds.scale(self.scale, self.scale_max, objet)
+            cmds.scale(random_value_s, random_value_s, random_value_s, objet)
 
 
 def main():
