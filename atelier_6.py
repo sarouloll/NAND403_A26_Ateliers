@@ -6,93 +6,99 @@
 # votre réflexe est, bien sûr, de faire un script dans Maya pour accélérer le processus.
 
 import sys
-import json
 import maya.cmds as cmds
 from pathlib import Path
 from PySide6.QtCore import Qt
 from PySide6 import QtWidgets
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QFileDialog
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QFileDialog, QDoubleSpinBox, QGridLayout, QPushButton
 
 
 class MessageBoard(QWidget):
 
-
     def __init__(self): # Constructeur
         super().__init__()  # Constructeur QWidget
-        self.data = None
 
-        self.setWindowTitle("Outliner Organiser")   # Titre de la fenetre
-
-        #Items à ajouter à la fenetre
-        # self.create_ui()
-        # self.create_json_find()
-        # self.create_checkbox()
-        # self.button()
-
+        self.create_ui()
+        self.get_value
+        
         
     def create_ui(self):
-        # Création de l'interface principale
-        self.layout = QVBoxLayout(self)
-        # label = QLabel("Enter JSON path")
-        # self.layout.addWidget(label)
+        layout = QGridLayout(self)
+        self.setWindowTitle("Fence maker")   # Titre de la fenetre
+        #spinbox = QDoubleSpinBox()
+        #spinbox.setMinimum(-10)
+        #spinbox.setMaximum(10)
+        self.create_button = QPushButton("Create")
+        self.create_button.clicked.connect(self.apply_changes)
 
+
+        #spinbox.valueChanged.connect(self.value_changed)
         self.message = QtWidgets.QLineEdit()
-        self.message.setFixedSize(400, 40)
-        self.layout.addWidget(self.message)
+        self.message.setFixedSize(200, 40)
+        #self.layout.addWidget(self.message)
+
+        #spinbox = QDoubleSpinBox()
+
+        #spinbox.setMinimum(-10)
+        #spinbox.setMaximum(10)
+        #spinbox.setSingleStep(3)
+
+        #spinbox.valueChanged.connect(self.value_changed)
+
+        self.hauteur = QtWidgets.QLineEdit("")
+        self.distanceMilieu = QtWidgets.QLineEdit("")
+        self.largeur = QtWidgets.QLineEdit("")
+        self.longueur = QtWidgets.QLineEdit("")
+
+        self.hauteur.setFixedSize(100, 25)
+        self.distanceMilieu.setFixedSize(100, 25)
+        self.largeur.setFixedSize(100, 25)
+        self.longueur.setFixedSize(100, 25)
+
+        layout.addWidget(QLabel("Hauteur"), 1, 0)
+        layout.addWidget(QLabel('Distance Milieu'), 5, 0)
+        layout.addWidget(QLabel('Largeur'), 7, 0)
+        layout.addWidget(QLabel('Longueur'), 9, 0)
 
 
-    # Configuration du bouton principal
-    def button(self):
-        button = QtWidgets.QPushButton()
-        self.layout.addWidget(button)
-        button.setText("APPLY")
+        layout.addWidget(self.hauteur, 1, 1)
+        layout.addWidget(self.distanceMilieu, 5, 1)
+        layout.addWidget(self.largeur, 7, 1)
+        layout.addWidget(self.longueur, 9, 1)
 
-        # Relie bouton d'execution avec la fonction
-        button.clicked.connect(self.verify_checkbox)
+        layout.addWidget(self.create_button)
+    
 
-     
-    # def create_checkbox(self):
-    #     # Nom et configuration des checkbox
-    #     self.checkbox_selected = QtWidgets.QCheckBox("Apply on selected only")
-    #     self.checkbox_color = QtWidgets.QCheckBox("Apply colors")
-    #     self.checkbox_reorder = QtWidgets.QCheckBox("Apply reorder")
+    def get_value(self, value):
+        print(value)
 
-    #     # Ajoute les checkbox dans l'interface
-    #     self.layout.addWidget(self.checkbox_selected)
-    #     self.layout.addWidget(self.checkbox_color)
-    #     self.layout.addWidget(self.checkbox_reorder)
+        self.hauteur = float(self.hauteur.text())
+        self.distance = float(self.distanceMilieu.text())
+        self.largeur = float(self.largeur.text())
+        self.longueur = float(self.longueur.text())
 
 
     # Fonction principale
     def apply_changes(self):
+
+        # hauteur = self.hauteur.value()
+        # distance = self.distanceMilieu.value()
+        # largeur = self.largeur.value()
+        # longueur = self.longueur.value()
+        
         cmds.undoInfo(openChunk=True) # CTRL Z 
         
         try:
-            # Activation de la sélection
-            if self.checkbox_selected.isChecked():
-                objects = cmds.ls("SM_*", "FX_*", "LGT_*", selection=True)
+             #obj_value = int(self.obj.text())
 
-            else:
-                objects = cmds.ls("SM_*", "FX_*", "LGT_*")
+             for i in range:
 
-            #Main logic de couleurs
-            if self.checkbox_color.isChecked():
-                prefix = self.data
+                poteauV = cmds.polyCube(name="fence_vertical", width=self.largeur, height=self.hauteur, depth=self.largeur)[0]
 
-                for obj in objects:
+                for y in range:
 
-                    for prefix, rgb in self.data.items():
+                    poteauH = cmds.polyCube(name="fence_horizontal",width=self.longueur,height=self.largeur,depth=self.largeur)[0]
 
-                        if obj.startswith(prefix):
-                            cmds.setAttr(obj + ".useOutlinerColor", 1)
-                            cmds.setAttr(obj + ".outlinerColor", rgb[0], rgb[1], rgb[2], type="double3")
-
-            # Logique de reorganisation
-            if self.checkbox_reorder.isChecked():
-                objects = sorted(objects)
-            
-                for obj in reversed(objects):
-                    cmds.reorder(obj, front=True) 
 
         finally:
             cmds.undoInfo(closeChunk=True) # CTRL Z
